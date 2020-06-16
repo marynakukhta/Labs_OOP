@@ -1,0 +1,145 @@
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #start_button, #stop_button {
+            background-color: #3289b6;
+            padding: 8px 16px;
+            border-radius: 8px;
+
+            font-family: "IBM Plex Mono",monospace;
+            font-stretch: expanded;
+            font-weight: bold;
+            color: #fff;
+
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 50px;
+
+            cursor: pointer;
+        }
+
+        #start_button:hover, #stop_button:hover {
+            background-color: #45aae0;
+        }
+
+        #start_button {
+            display: block;
+        }
+
+        #stop_button {
+            display: none;
+        }
+    </style>
+    <title>Balls Collision</title>
+    <script src="js/three.js"></script>
+</head>
+<body>
+    <div id="start_button">START</div>
+    <div id="stop_button">STOP</div>
+</body>
+<script>
+
+    let camera, scene, renderer;
+    let geometry, material, sphere_1, sphere_2;
+
+    let a_x_pos, a_y_pos, a_radius, b_x_pos, b_y_pos, b_radius;
+
+    // Server communication
+    const startButton = document.getElementById("start_button");
+    const stopButton = document.getElementById("stop_button");
+
+    const coordinatesList = document.getElementById("coordinates_list");
+
+    const socket = new WebSocket("ws://localhost:8080/socket");
+
+    socket.onopen = function (event) {
+        socket.send("Connected");
+        init();
+    };
+
+    socket.onmessage = function (event) {
+        receiveCoordinates(event.data);
+    };
+
+    startButton.onclick = function (event) {
+        startButton.style.display = "none";
+        stopButton.style.display = "block";
+        socket.send("Start");
+    }
+
+    stopButton.onclick = function (event) {
+        startButton.style.display = "block";
+        stopButton.style.display = "none";
+        socket.send("Stop");
+    }
+
+    function receiveCoordinates(data) {
+        if (data[0] === 'Z') {
+            // Init block
+
+            let res = data.split(" ");
+            a_x_pos = parseFloat(res[1]);
+            a_y_pos = parseFloat(res[2]);
+            a_radius = parseFloat(res[3]);
+
+            console.log("RADIUS : " + a_radius)
+
+            b_x_pos = parseFloat(res[4]);
+            b_y_pos = parseFloat(res[5]);
+            b_radius = parseFloat(res[6]);
+        } else {
+            let res = data.split(" ");
+            a_x_pos = parseFloat(res[0]);
+            a_y_pos = parseFloat(res[1]);
+
+            b_x_pos = parseFloat(res[2]);
+            b_y_pos = parseFloat(res[3]);
+
+            sphere_1.position.x = a_x_pos;
+            sphere_1.position.y = a_y_pos;
+            sphere_2.position.x = b_x_pos;
+            sphere_2.position.y = b_y_pos;
+
+            console.log("1: " + sphere_1.position.x + " / " + sphere_1.position.y);
+            console.log("2: " + sphere_2.position.x + " / " + sphere_2.position.y)
+
+            renderer.render(scene, camera);
+        }
+    }
+
+    // Visualisation
+    function init() {
+        socket.send("INIT");
+
+        camera = new THREE.PerspectiveCamera(
+            70, window.innerWidth / window.innerHeight, 0.01, 10);
+        camera.position.z = 1;
+
+        scene = new THREE.Scene();
+
+        geometry = new THREE.SphereGeometry(0.1, 32, 32);
+        let texture = new THREE.TextureLoader().load('textures/sphere.jpg');
+        material = new THREE.MeshBasicMaterial( { map: texture } );
+
+        sphere_1 = new THREE.Mesh(geometry, material);
+        scene.add(sphere_1);
+
+        sphere_2 = new THREE.Mesh(geometry, material);
+        scene.add(sphere_2);
+
+        sphere_1.position.x = a_x_pos;
+        sphere_1.position.y = -a_y_pos;
+        sphere_2.position.x = b_x_pos;
+        sphere_2.position.y = -b_y_pos;
+
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+    }
+</script>
+</html>

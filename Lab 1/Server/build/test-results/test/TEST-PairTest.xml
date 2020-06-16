@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="PairTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2020-05-02T19:00:03" hostname="Air-Alina.la.net.ua" time="0.025">
+  <properties/>
+  <testcase name="testNull()" classname="PairTest" time="0.014"/>
+  <testcase name="setValues()" classname="PairTest" time="0.004"/>
+  <testcase name="getValues()" classname="PairTest" time="0.001"/>
+  <testcase name="testArgumentTypes()" classname="PairTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

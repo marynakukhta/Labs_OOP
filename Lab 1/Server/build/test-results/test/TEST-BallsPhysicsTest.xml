@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="BallsPhysicsTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-05-02T19:00:03" hostname="Air-Alina.la.net.ua" time="0.066">
+  <properties/>
+  <testcase name="iterate()" classname="BallsPhysicsTest" time="0.066"/>
+  <system-out><![CDATA[Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+Send new coordinates
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
